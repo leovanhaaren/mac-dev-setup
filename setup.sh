@@ -79,7 +79,7 @@ chsh -s /bin/zsh
 echo 'eval $(homebrew/bin/brew shellenv)' >> /Users/$USER/.zshrc
 
 # Apps
-apps=(
+APPS=(
   alfred
   # bartender
   bettertouchtool
@@ -97,7 +97,12 @@ apps=(
 # Install apps to /Applications
 # Default is: /Users/$user/Applications
 echo "installing apps with Cask..."
-brew install --cask --appdir="/Applications" ${apps[@]}
+
+for p in $(brew list); do
+	APPS=${APPS//$p/}
+done;
+
+brew install --cask --appdir="/Applications" ${APPS[@]}
 
 brew cleanup
 
