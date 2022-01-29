@@ -14,7 +14,14 @@ xcode-select --install
 # Install if we don't have it
 if test ! $(which brew); then
   echo "Installing homebrew..."
-  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  # single user
+  # ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  
+  # multi user
+  mkdir homebrew && curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C homebrew
+  eval "$(homebrew/bin/brew shellenv)"
+  brew update --force --quiet
+  chmod -R go-w "$(brew --prefix)/share/zsh"
 fi
 
 # Update homebrew recipes
@@ -42,16 +49,16 @@ git config --global user.email ${emailvar}
 # brew install git-flow
 
 echo "Installing other brew stuff..."
-brew install tree
-brew install wget
-brew install trash
+#brew install tree
+#brew install wget
+#brew install trash
 brew install node
 
 echo "Cleaning up brew"
 brew cleanup
 
 echo "Installing homebrew cask"
-brew install caskroom/cask/brew-cask
+#brew install caskroom/cask/brew-cask
 
 # echo "Copying dotfiles from Github"
 # cd ~
@@ -70,29 +77,29 @@ git clone git://github.com/zsh-users/zsh-syntax-highlighting.git
 echo "Setting ZSH as shell..."
 chsh -s /bin/zsh
 
+echo 'eval $(homebrew/bin/brew shellenv)' >> /Users/$USER/.zshrc
+
 # Apps
 apps=(
   alfred
-  bartender
+  # bartender
   bettertouchtool
   cleanmymac
   firefox
   google-chrome
-  phpstorm
+  # phpstorm
   visual-studio-code
   iterm2
-  onepassword
-  sequel-pro
+  1password
+  # sequel-pro
+  notion
 )
 
 # Install apps to /Applications
 # Default is: /Users/$user/Applications
 echo "installing apps with Cask..."
-brew cask install --appdir="/Applications" ${apps[@]}
+brew install --cask --appdir="/Applications" ${apps[@]}
 
-brew cask alfred link
-
-brew cask cleanup
 brew cleanup
 
 echo "Done!"
