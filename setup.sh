@@ -37,11 +37,10 @@ echo "Git config"
 read -p 'Git username: ' usernamevar
 read -p 'Git email: ' emailvar
 echo
-echo Thankyou $usernamevar ($emailvar)
+echo "Thankyou ${usernamevar} (${emailvar})"
 
 git config --global user.name "${usernamevar}"
 git config --global user.email ${emailvar}
-
 
 # echo "Installing brew git utilities..."
 # brew install git-extras
